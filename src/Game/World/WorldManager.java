@@ -75,6 +75,7 @@ public class WorldManager {
 		 * 	Spawn Areas in Map (2 extra areas spawned off screen)
 		 *  To understand this, go down to randomArea(int yPosition) 
 		 */
+
 		for(int i=0; i<gridHeight+2; i++) {
 			SpawnedAreas.add(randomArea((-2+i)*64));
 		}
@@ -175,6 +176,16 @@ public class WorldManager {
 						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) {
 					player.setX(player.getX() + 1);
 				}
+			}
+
+			if (SpawnedHazards.get(i) instanceof Tree) {
+				SpawnedHazards.get(i).setX(SpawnedHazards.get(i).getX());
+				if (SpawnedHazards.get(i).GetCollision() != null
+						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) {
+					player.setX(player.getX() - 1);
+					player.moving = false;
+				}
+
 
 			}
 
@@ -206,6 +217,7 @@ public class WorldManager {
 	 * Given a yPosition, this method will return a random Area out of the Available ones.)
 	 * It is also in charge of spawning hazards at a specific condition.
 	 */
+
 	private BaseArea randomArea(int yPosition) {
 		Random rand = new Random();
 
@@ -223,28 +235,52 @@ public class WorldManager {
 		else {
 			randomArea = new EmptyArea(handler, yPosition);
 		}
+
 		return randomArea;
 	}
 
 	/*
 	 * Given a yPositionm this method will add a new hazard to the SpawnedHazards ArrayList
 	 */
+	boolean prevLillySpawn = false;
 	private void SpawnHazard(int yPosition, BaseArea area) {
 		Random rand = new Random();
 		int randInt;
 		int choice = rand.nextInt(7);
 		// Chooses between Log or Lillypad
+		//		while (prevLillySpawn == true) {
 		if (area instanceof WaterArea) {
+			//				if (prevLillySpawn == true) {
+			//					choice = rand.nextInt(7);
+			//					continue;
+			//
+			//				}
 			if (choice <=2) {
 				randInt = 64 * rand.nextInt(4);
 				SpawnedHazards.add(new Log(handler, randInt, yPosition));
 			}
 			else if (choice >=5){
-				rand = new Random();
-				choice = rand.nextInt(4);
-				for (int i = 0; i < choice; i++) {
-					randInt = 64 * rand.nextInt(9);
-					SpawnedHazards.add(new LillyPad(handler, randInt, yPosition));
+				if (prevLillySpawn == false) {
+					rand = new Random();
+					choice = rand.nextInt(4);
+					for (int i = 0; i <= choice; i++) {
+						randInt = 64 * rand.nextInt(9);
+						SpawnedHazards.add(new LillyPad(handler, randInt, yPosition));
+						prevLillySpawn = true;
+					}
+				}
+				else {
+					rand = new Random();
+					choice = rand.nextInt(2);
+					if (choice <= 1) {
+						randInt = 64 * rand.nextInt(4);
+						SpawnedHazards.add(new Log(handler, randInt, yPosition));
+					}
+					else {
+						randInt = 64 * rand.nextInt(3);
+						SpawnedHazards.add(new Turtle(handler, randInt, yPosition));
+					}
+					prevLillySpawn = false;
 				}
 			}
 			else {
@@ -263,3 +299,4 @@ public class WorldManager {
 		}
 	}
 }
+
