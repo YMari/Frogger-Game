@@ -182,19 +182,42 @@ public class WorldManager {
 				SpawnedHazards.get(i).setX(SpawnedHazards.get(i).getX());
 				if (SpawnedHazards.get(i).GetCollision() != null
 						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) {
-					player.setX(player.getX() - 1);
-					player.moving = false;
+//					if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_D)){
+//						player.setX(player.getX() - 1);
+//						player.moving = false;
+						//				switch (player.facing) {
+						//					case "UP":
+						//						player.setY(player.getY() - 1);
+						//						player.moving = false;
+						//						break;
+						//
+						//					case "LEFT":
+						//						player.setX(player.getX() + 1);
+						//						player.moving = false;
+						//						break;
+						//
+						//					case "DOWN":
+						//						player.setY(player.getY() + 1);
+						//						player.moving = false;
+						//						break;
+						//
+						//					case "RIGHT":
+						//						player.setX(player.getX() - 1);
+						//						player.moving = false;
+						//						break;
+						//					}
+					}
+
 				}
 
 
-			}
-
-			// if hazard has passed the screen height, then remove this hazard.
-			if (SpawnedHazards.get(i).getY() > handler.getHeight()) {
-				SpawnedHazards.remove(i);
+				// if hazard has passed the screen height, then remove this hazard.
+				if (SpawnedHazards.get(i).getY() > handler.getHeight()) {
+					SpawnedHazards.remove(i);
+				}
 			}
 		}
-	}
+	
 
 
 	public void render(Graphics g){
@@ -248,13 +271,7 @@ public class WorldManager {
 		int randInt;
 		int choice = rand.nextInt(7);
 		// Chooses between Log or Lillypad
-		//		while (prevLillySpawn == true) {
 		if (area instanceof WaterArea) {
-			//				if (prevLillySpawn == true) {
-			//					choice = rand.nextInt(7);
-			//					continue;
-			//
-			//				}
 			if (choice <=2) {
 				randInt = 64 * rand.nextInt(4);
 				SpawnedHazards.add(new Log(handler, randInt, yPosition));

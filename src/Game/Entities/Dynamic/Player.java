@@ -16,7 +16,7 @@ public class Player extends EntityBase {
     private Handler handler;
 
 
-    private Rectangle player;
+    public Rectangle player;
     public String facing = "UP";
     public Boolean moving = false;
     private int moveCoolDown=0;
@@ -127,6 +127,7 @@ public class Player extends EntityBase {
                 }
                 setX(getX()+64);
             }
+            //if()
             facing = "RIGHT";
         }
     }
