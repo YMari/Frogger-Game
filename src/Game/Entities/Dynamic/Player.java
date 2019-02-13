@@ -1,7 +1,6 @@
 package Game.Entities.Dynamic;
 
 import Game.Entities.EntityBase;
-import Game.Entities.Static.Tree;
 import Main.Handler;
 import Resources.Images;
 
@@ -16,9 +15,9 @@ public class Player extends EntityBase {
     private Handler handler;
 
 
-    public Rectangle player;
-    public String facing = "UP";
-    public Boolean moving = false;
+    private Rectangle player;
+    private String facing = "UP";
+    private Boolean moving = false;
     private int moveCoolDown=0;
 
     private int index =0;
@@ -127,7 +126,6 @@ public class Player extends EntityBase {
                 }
                 setX(getX()+64);
             }
-            //if()
             facing = "RIGHT";
         }
     }
@@ -228,10 +226,6 @@ public class Player extends EntityBase {
     }
 
     public Rectangle getPlayerCollision() {
-//    	// REEEEEEEEEEEEEEEEEEEEEEEEEEE
-//        if (player.getBounds().intersects(Tree.tree.getBounds())) {
-//        	moving = false;
-//      }
         return player;
     }
 
