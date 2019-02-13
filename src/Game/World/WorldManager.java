@@ -107,7 +107,7 @@ public class WorldManager {
 			this.object2.addVectors();
 		}
 		if(this.handler.getKeyManager().keyJustPressed(this.handler.getKeyManager().num[4]) && this.object2.isUIInstance) {
-			this.object2.scalarProduct(handler);
+			this.object2.scalarProduct();
 		}
 
 		if(this.reset) {
