@@ -147,6 +147,7 @@ public class WorldManager {
 			}
 		}
 		
+		
 		HazardMovement();
 		
         player.tick();
