@@ -210,7 +210,6 @@ public class Player extends EntityBase {
         else if (facing.equals("RIGHT")) {
             player = new Rectangle(this.getX() - 64, this.getY(), getWidth(), getHeight());
         }
-
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
