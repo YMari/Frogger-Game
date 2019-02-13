@@ -145,6 +145,7 @@ public class WorldManager {
 					&& player.getY() - SpawnedAreas.get(i).getYPosition() < 3) {
 				player.setY(SpawnedAreas.get(i).getYPosition());
 			}
+			
 		}
 		
 		HazardMovement();
