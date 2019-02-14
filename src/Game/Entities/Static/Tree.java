@@ -9,7 +9,7 @@ import Resources.Images;
 
 public class Tree extends StaticBase {
 	
-    public static Rectangle tree;
+    public Rectangle tree;
 
 
     public Tree(Handler handler,int xPosition, int yPosition) {

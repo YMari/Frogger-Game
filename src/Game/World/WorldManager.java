@@ -23,11 +23,11 @@ import java.util.Random;
  */
 public class WorldManager {
 
-	private ArrayList<BaseArea> AreasAvailables;			// Lake, empty and grass area (NOTE: The empty tile is just the "sand" tile. Ik, weird name.)
-	private ArrayList<StaticBase> StaticEntitiesAvailables;	// Has the hazards: LillyPad, Log, Tree, and Turtle.
+	public ArrayList<BaseArea> AreasAvailables;			// Lake, empty and grass area (NOTE: The empty tile is just the "sand" tile. Ik, weird name.)
+	public ArrayList<StaticBase> StaticEntitiesAvailables;	// Has the hazards: LillyPad, Log, Tree, and Turtle.
 
-	private ArrayList<BaseArea> SpawnedAreas;				// Areas currently on world
-	private ArrayList<StaticBase> SpawnedHazards;			// Hazards currently on world.
+	public ArrayList<BaseArea> SpawnedAreas;				// Areas currently on world
+	public ArrayList<StaticBase> SpawnedHazards;			// Hazards currently on world.
 
 	Long time;
 	Boolean reset = true;
@@ -44,7 +44,8 @@ public class WorldManager {
 	private ID[][] grid;									
 	private int gridWidth,gridHeight;						// Size of the grid. 
 	private int movementSpeed;								// Movement of the tiles going downwards.
-
+	
+	boolean prevLillySpawn = false;
 
 	public WorldManager(Handler handler) {
 		this.handler = handler;
@@ -158,8 +159,13 @@ public class WorldManager {
 
 	}
 
-	private void HazardMovement() {
-
+	public void HazardMovement() {
+		//		int treeBoundCount = 0;
+		//		for (int j = 0; j < SpawnedHazards.size(); j++) {
+		//			if (SpawnedHazards.get(j) instanceof Tree) {
+		//				treeBoundCount =+ 1;
+		//			}
+		//		}
 		for (int i = 0; i < SpawnedHazards.size(); i++) {
 
 			// Moves hazard down
@@ -178,46 +184,42 @@ public class WorldManager {
 				}
 			}
 
-			if (SpawnedHazards.get(i) instanceof Tree) {
-				SpawnedHazards.get(i).setX(SpawnedHazards.get(i).getX());
-				if (SpawnedHazards.get(i).GetCollision() != null
-						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) {
-//					if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_D)){
-//						player.setX(player.getX() - 1);
-//						player.moving = false;
-						//				switch (player.facing) {
-						//					case "UP":
-						//						player.setY(player.getY() - 1);
-						//						player.moving = false;
-						//						break;
-						//
-						//					case "LEFT":
-						//						player.setX(player.getX() + 1);
-						//						player.moving = false;
-						//						break;
-						//
-						//					case "DOWN":
-						//						player.setY(player.getY() + 1);
-						//						player.moving = false;
-						//						break;
-						//
-						//					case "RIGHT":
-						//						player.setX(player.getX() - 1);
-						//						player.moving = false;
-						//						break;
-						//					}
-					}
+			//			for (int k = 0; k < treeBoundCount; k++) {
 
-				}
+			//			if (SpawnedHazards.get(i) instanceof Tree) {
+			//
+			////				SpawnedHazards.get(i).setX(SpawnedHazards.get(i).getX());
+			//				
+			//				if (SpawnedHazards.get(i).GetCollision() != null
+			//						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) {
+			//					if (Player.facing.equals("UP")) {
+			//						player.setY(player.getY() + 1);
+			//						player.moving = false;
+			//					}
+			//					else if (Player.facing.equals("DOWN")) {
+			//						player.setY(player.getY() - 1);
+			//						player.moving = false;
+			//					}
+			//					else if (Player.facing.equals("LEFT")) {
+			//						player.setX(player.getX() + 1);
+			//						player.moving = false;
+			//					}
+			//					else if (Player.facing.equals("RIGHT")) {
+			//						player.setX(player.getX() - 1);
+			//						player.moving = false;
+			//					}
+			//				}
+			//			}
 
 
-				// if hazard has passed the screen height, then remove this hazard.
-				if (SpawnedHazards.get(i).getY() > handler.getHeight()) {
-					SpawnedHazards.remove(i);
-				}
+			// if hazard has passed the screen height, then remove this hazard.
+			if (SpawnedHazards.get(i).getY() > handler.getHeight()) {
+				SpawnedHazards.remove(i);
 			}
 		}
-	
+	}
+
+
 
 
 	public void render(Graphics g){
@@ -241,7 +243,7 @@ public class WorldManager {
 	 * It is also in charge of spawning hazards at a specific condition.
 	 */
 
-	private BaseArea randomArea(int yPosition) {
+	public BaseArea randomArea(int yPosition) {
 		Random rand = new Random();
 
 		// From the AreasAvailable, get me any random one.
@@ -265,8 +267,10 @@ public class WorldManager {
 	/*
 	 * Given a yPositionm this method will add a new hazard to the SpawnedHazards ArrayList
 	 */
-	boolean prevLillySpawn = false;
-	private void SpawnHazard(int yPosition, BaseArea area) {
+	
+
+	
+	public void SpawnHazard(int yPosition, BaseArea area) {
 		Random rand = new Random();
 		int randInt;
 		int choice = rand.nextInt(7);
