@@ -1,8 +1,11 @@
 package Game.Entities.Dynamic;
 
 import Game.Entities.EntityBase;
+<<<<<<< HEAD
 import Game.Entities.Static.Tree;
 import Game.World.WorldManager;
+=======
+>>>>>>> refs/heads/master
 import Main.Handler;
 import Resources.Images;
 
@@ -17,10 +20,17 @@ public class Player extends EntityBase {
 	private Handler handler;
 
 
+<<<<<<< HEAD
 	public Rectangle player;
 	public String facing = "UP";
 	public Boolean moving = false;
 	private int moveCoolDown=0;
+=======
+    private Rectangle player;
+    private String facing = "UP";
+    private Boolean moving = false;
+    private int moveCoolDown=0;
+>>>>>>> refs/heads/master
 
 	private int index =0;
 
@@ -132,6 +142,7 @@ public class Player extends EntityBase {
 			facing = "DOWN";
 		}
 
+<<<<<<< HEAD
 		/////////////////MOVE RIGHT///////////////
 		else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_D) && !moving && facing.equals("RIGHT")){
 			for (int i = 0; i < handler.getWorld().SpawnedHazards.size(); i++) {
@@ -163,6 +174,31 @@ public class Player extends EntityBase {
 			facing = "RIGHT";
 		}
 	}
+=======
+        /////////////////MOVE RIGHT///////////////
+        else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_D) && !moving && facing.equals("RIGHT")){
+            moving=true;
+        }else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_D) && !moving&& !facing.equals("RIGHT")){
+            if(facing.equals("LEFT")) {
+                setX(getX()+64);
+            }
+            if(facing.equals("UP")) {
+                setX(getX()+64);
+                setY(getY()-64);
+            }
+            if(facing.equals("DOWN")) {
+                if(this.getX() % 64 >= 64 / 2 ) {
+                    this.setX(this.getX() + (64 - this.getX() % 64));
+                }
+                else {
+                    this.setX(this.getX() - this.getX() % 64);
+                }
+                setX(getX()+64);
+            }
+            facing = "RIGHT";
+        }
+    }
+>>>>>>> refs/heads/master
 
 	private void animateMovement(){
 		if(index==8) {
@@ -259,8 +295,14 @@ public class Player extends EntityBase {
 		return dest;
 	}
 
+<<<<<<< HEAD
 	public Rectangle getPlayerCollision() {
 		return player;
 	}
+=======
+    public Rectangle getPlayerCollision() {
+        return player;
+    }
+>>>>>>> refs/heads/master
 
 }
