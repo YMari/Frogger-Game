@@ -23,18 +23,9 @@ import java.util.Random;
  */
 public class WorldManager {
 
-	public ArrayList<BaseArea> AreasAvailables;			// Lake, empty and grass area (NOTE: The empty tile is just the "sand" tile. Ik, weird name.)
-	public ArrayList<StaticBase> StaticEntitiesAvailables;	// Has the hazards: LillyPad, Log, Tree, and Turtle.
+	private ArrayList<BaseArea> AreasAvailables;			// Lake, empty and grass area (NOTE: The empty tile is just the "sand" tile. Ik, weird name.)
+	private ArrayList<StaticBase> StaticEntitiesAvailables;	// Has the hazards: LillyPad, Log, Tree, and Turtle.
 
-<<<<<<< HEAD
-	public ArrayList<BaseArea> SpawnedAreas;				// Areas currently on world
-	public ArrayList<StaticBase> SpawnedHazards;			// Hazards currently on world.
-
-	Long time;
-	Boolean reset = true;
-
-	Handler handler;
-=======
 	private ArrayList<BaseArea> SpawnedAreas;				// Areas currently on world
 	private ArrayList<StaticBase> SpawnedHazards;			// Hazards currently on world.
     
@@ -42,7 +33,6 @@ public class WorldManager {
     Boolean reset = true;
     
     Handler handler;
->>>>>>> refs/heads/master
 
 
 	private Player player;									// How do we find the frog coordinates? How do we find the Collisions? This bad boy.
@@ -54,15 +44,10 @@ public class WorldManager {
 	private ID[][] grid;									
 	private int gridWidth,gridHeight;						// Size of the grid. 
 	private int movementSpeed;								// Movement of the tiles going downwards.
-<<<<<<< HEAD
-	
-	boolean prevLillySpawn = false;
-=======
     
 
     public WorldManager(Handler handler) {
         this.handler = handler;
->>>>>>> refs/heads/master
 
         AreasAvailables = new ArrayList<>();				// Here we add the Tiles to be utilized.
         StaticEntitiesAvailables = new ArrayList<>();		// Here we add the Hazards to be utilized.
@@ -162,7 +147,6 @@ public class WorldManager {
 			}
 		}
 		
-		
 		HazardMovement();
 		
         player.tick();
@@ -173,18 +157,8 @@ public class WorldManager {
    
     }
 
-<<<<<<< HEAD
-	public void HazardMovement() {
-		//		int treeBoundCount = 0;
-		//		for (int j = 0; j < SpawnedHazards.size(); j++) {
-		//			if (SpawnedHazards.get(j) instanceof Tree) {
-		//				treeBoundCount =+ 1;
-		//			}
-		//		}
-=======
 	private void HazardMovement() {
 		
->>>>>>> refs/heads/master
 		for (int i = 0; i < SpawnedHazards.size(); i++) {
 
 			// Moves hazard down
@@ -204,47 +178,12 @@ public class WorldManager {
 
 			}
 
-<<<<<<< HEAD
-			//			for (int k = 0; k < treeBoundCount; k++) {
-
-			//			if (SpawnedHazards.get(i) instanceof Tree) {
-			//
-			////				SpawnedHazards.get(i).setX(SpawnedHazards.get(i).getX());
-			//				
-			//				if (SpawnedHazards.get(i).GetCollision() != null
-			//						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) {
-			//					if (Player.facing.equals("UP")) {
-			//						player.setY(player.getY() + 1);
-			//						player.moving = false;
-			//					}
-			//					else if (Player.facing.equals("DOWN")) {
-			//						player.setY(player.getY() - 1);
-			//						player.moving = false;
-			//					}
-			//					else if (Player.facing.equals("LEFT")) {
-			//						player.setX(player.getX() + 1);
-			//						player.moving = false;
-			//					}
-			//					else if (Player.facing.equals("RIGHT")) {
-			//						player.setX(player.getX() - 1);
-			//						player.moving = false;
-			//					}
-			//				}
-			//			}
-
-
-=======
->>>>>>> refs/heads/master
 			// if hazard has passed the screen height, then remove this hazard.
 			if (SpawnedHazards.get(i).getY() > handler.getHeight()) {
 				SpawnedHazards.remove(i);
 			}
 		}
 	}
-<<<<<<< HEAD
-
-
-=======
 	
 	
     public void render(Graphics g){
@@ -260,52 +199,7 @@ public class WorldManager {
     	
        player.render(g);       
        this.object2.render(g);      
->>>>>>> refs/heads/master
 
-<<<<<<< HEAD
-
-	public void render(Graphics g){
-
-		for(BaseArea area : SpawnedAreas) {
-			area.render(g);
-		}
-
-		for (StaticBase hazards : SpawnedHazards) {
-			hazards.render(g);
-
-		}
-
-		player.render(g);       
-		this.object2.render(g);      
-
-	}
-
-	/*
-	 * Given a yPosition, this method will return a random Area out of the Available ones.)
-	 * It is also in charge of spawning hazards at a specific condition.
-	 */
-
-	public BaseArea randomArea(int yPosition) {
-		Random rand = new Random();
-
-		// From the AreasAvailable, get me any random one.
-		BaseArea randomArea = AreasAvailables.get(rand.nextInt(AreasAvailables.size())); 
-
-		if(randomArea instanceof GrassArea) {
-			randomArea = new GrassArea(handler, yPosition);
-			SpawnHazard(yPosition, randomArea);
-		}
-		else if(randomArea instanceof WaterArea) {
-			randomArea = new WaterArea(handler, yPosition);
-			SpawnHazard(yPosition, randomArea);
-		}
-		else {
-			randomArea = new EmptyArea(handler, yPosition);
-		}
-
-		return randomArea;
-	}
-=======
     }
     
     /*
@@ -330,19 +224,11 @@ public class WorldManager {
     	}
     	return randomArea;
     }
->>>>>>> refs/heads/master
 
 	/*
 	 * Given a yPositionm this method will add a new hazard to the SpawnedHazards ArrayList
 	 */
-<<<<<<< HEAD
-	
-
-	
-	public void SpawnHazard(int yPosition, BaseArea area) {
-=======
 	private void SpawnHazard(int yPosition) {
->>>>>>> refs/heads/master
 		Random rand = new Random();
 		int randInt;
 		int choice = rand.nextInt(7);
