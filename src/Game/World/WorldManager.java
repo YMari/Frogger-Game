@@ -35,8 +35,6 @@ public class WorldManager {
 
 	Handler handler;
 
-
-
 	private Player player;									// How do we find the frog coordinates? How do we find the Collisions? This bad boy.
 
 	UIManager object = new UIManager(handler);
@@ -48,7 +46,6 @@ public class WorldManager {
 	private int movementSpeed;								// Movement of the tiles going downwards.
 
 	boolean prevLillySpawn = false;
-
 
 
 	public WorldManager(Handler handler) {

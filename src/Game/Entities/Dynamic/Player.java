@@ -6,10 +6,13 @@ import Game.Entities.Static.Tree;
 import Game.World.WorldManager;
 
 import Main.Handler;
+import Main.Launch;
 import Resources.Images;
+
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 
 /*
@@ -27,6 +30,17 @@ public class Player extends EntityBase {
 
 
 	private int index =0;
+	
+	// set the borders of the screen
+	// offset (by 96 on sides, 128 on top) from the actual measurement of the screen
+	// so the animation looks good
+	public Line2D topBorder = new Line2D.Double(-128,-96,672,-96);
+	public Line2D bottomBorder = new Line2D.Double(-96,864,672,864);
+	public Line2D leftBorder = new Line2D.Double(-96,-96,-96,864);
+	public Line2D rightBorder = new Line2D.Double(672,-96,672,864);
+	
+
+
 
 	public Player(Handler handler) {
 		super(handler);
@@ -59,15 +73,40 @@ public class Player extends EntityBase {
 			setY(getY()-64);
 		}
 	}
-
+	
+	
 	private void move(){
 		if(moveCoolDown< 25){
 			moveCoolDown++;
 		}
 		index=0;
-
+		
+		/////////prevent frogger from stepping outside the screen///////////////
+		
+		if(new Rectangle(getX(),getY()-128,getWidth(),getHeight()).intersectsLine(topBorder)) { // up
+			setY(getY()+64);
+			return;
+		}
+		else if (new Rectangle(getX(),getY()+64,getWidth(),getHeight()).intersectsLine(bottomBorder)){ // down, should prompt game over screen instead
+//			setY(getY()-32);
+//			return;
+			handler.getGame().reStart();
+		}
+		else if (new Rectangle(getX()-64,getY(),getWidth(),getHeight()).intersectsLine(leftBorder)){ // left
+			setX(getX()+32);
+			return;
+		}
+		else if (new Rectangle(getX(),getY(),getWidth(),getHeight()).intersectsLine(rightBorder)){ // right
+			setX(getX()-32);
+			return;
+		}
+		/////////////////////////////////////////////////////////////////////////
+		
 		/////////////////MOVE UP///////////////
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_W) && !moving && facing.equals("UP")){
+			
+			// disables Frogger from jumping on trees (found on each side below)
+			
 			for (int i = 0; i < handler.getWorld().SpawnedHazards.size(); i++) {
 				if (handler.getWorld().SpawnedHazards.get(i) instanceof Tree) {
 					if (handler.getWorld().SpawnedHazards.get(i).GetCollision() != null
