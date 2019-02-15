@@ -83,7 +83,9 @@ public class WorldManager {
 		 */
 
 		for(int i=0; i<gridHeight+2; i++) {
-			SpawnedAreas.add(randomArea((-2+i)*64));
+//			SpawnedAreas.add(randomArea((-2+i)*64));
+// spawns only empty areas at the start, should fix for no-water only on spawn
+			SpawnedAreas.add(new EmptyArea(handler, ((-2+i)*64)));
 		}
 
 		player.setX((gridWidth/2)*64);
