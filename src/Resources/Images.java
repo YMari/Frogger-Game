@@ -45,7 +45,8 @@ public class Images {
     public static BufferedImage log;
     public static BufferedImage grass;
     
-    public static BufferedImage tree; // added YMari
+    public static BufferedImage tree;
+    public static BufferedImage gameOver;
     
     public static BufferedImage[] object;
 
@@ -65,6 +66,8 @@ public class Images {
             playerSheet = new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/gameSprites.png")));
             WaterSheet = new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/water.png")));
 
+            gameOver = ImageIO.read(getClass().getResourceAsStream("/Sheets/GameOverScreen.png"));
+            
             title = ImageIO.read(getClass().getResourceAsStream("/Sheets/Frogger2.png"));
             Pause = ImageIO.read(getClass().getResourceAsStream("/Buttons/Pause.png"));
             Resume[0] = ImageIO.read(getClass().getResourceAsStream("/Buttons/ResumeButton.png"));

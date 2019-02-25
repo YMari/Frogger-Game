@@ -16,6 +16,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>res/Sheets/GameOverScreen.png</name>
+			<type>1</type>
+			<location>C:/Users/Yavier/git/frogger-dank-pepe-memes/res/Sheets/GameOverScreen.png</location>
+		</link>
+		<link>
 			<name>res/Sheets/tree.png</name>
 			<type>1</type>
 			<location>C:/Users/Yavier/git/frogger-dank-pepe-memes/res/Sheets/tree.png</location>

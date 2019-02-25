@@ -3,6 +3,7 @@ package Game.Entities.Dynamic;
 import Game.Entities.EntityBase;
 
 import Game.Entities.Static.Tree;
+import Game.GameStates.State;
 import Game.World.WorldManager;
 
 import Main.Handler;
@@ -88,9 +89,8 @@ public class Player extends EntityBase {
 			return;
 		}
 		else if (new Rectangle(getX(),getY()+64,getWidth(),getHeight()).intersectsLine(bottomBorder)){ // down, should prompt game over screen instead
-//			setY(getY()-32);
-//			return;
-			handler.getGame().reStart();
+            State.setState(handler.getGame().gameOverState);
+			// handler.getGame().reStart();
 		}
 		else if (new Rectangle(getX()-64,getY(),getWidth(),getHeight()).intersectsLine(leftBorder)){ // left
 			setX(getX()+32);
@@ -100,7 +100,6 @@ public class Player extends EntityBase {
 			setX(getX()-32);
 			return;
 		}
-		/////////////////////////////////////////////////////////////////////////
 		
 		/////////////////MOVE UP///////////////
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_W) && !moving && facing.equals("UP")){
