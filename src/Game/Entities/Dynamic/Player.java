@@ -35,7 +35,7 @@ public class Player extends EntityBase {
 
 	private int index =0;
 	public int score = 0;
-	public int highScore = 0;
+	public static int highScore = 0;
 	
 	// set the borders of the screen
 	// offset (by 96 on sides, 128 on top) from the actual measurement of the screen
@@ -86,10 +86,10 @@ public class Player extends EntityBase {
 		for(int i = 0; i < handler.getWorld().SpawnedAreas.size(); i++) {
 			if (handler.getWorld().SpawnedAreas.get(i) instanceof WaterArea && handler.getWorld().SpawnedAreas.get(i).getYPosition() == player.getY()) {
 				for (int j = 0; j < handler.getWorld().SpawnedHazards.size(); j++) {
-					if (getX() > handler.getWorld().SpawnedHazards.get(j).getX() 
-							&& getX() < handler.getWorld().SpawnedHazards.get(j).getX() + handler.getWorld().SpawnedHazards.get(j).getWidth()
-							&& getY() > handler.getWorld().SpawnedHazards.get(j).getY()
-							&& getY() < handler.getWorld().SpawnedHazards.get(j).getY() + handler.getWorld().SpawnedHazards.get(j).getHeight()) {
+					if (player.x > handler.getWorld().SpawnedHazards.get(j).getX() 
+							&& player.x < handler.getWorld().SpawnedHazards.get(j).getX() + handler.getWorld().SpawnedHazards.get(j).getWidth()
+							&& player.y > handler.getWorld().SpawnedHazards.get(j).getY()
+							&& player.y < handler.getWorld().SpawnedHazards.get(j).getY() + handler.getWorld().SpawnedHazards.get(j).getHeight()) {
 						return;
 						//State.setState(handler.getGame().gameOverState);
 						}
