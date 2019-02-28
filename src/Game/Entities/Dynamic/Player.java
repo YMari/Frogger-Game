@@ -1,9 +1,12 @@
 package Game.Entities.Dynamic;
 
 import Game.Entities.EntityBase;
-
+import Game.Entities.Static.LillyPad;
+import Game.Entities.Static.Log;
 import Game.Entities.Static.Tree;
+import Game.Entities.Static.Turtle;
 import Game.GameStates.State;
+import Game.World.WaterArea;
 import Game.World.WorldManager;
 
 import Main.Handler;
@@ -31,6 +34,8 @@ public class Player extends EntityBase {
 
 
 	private int index =0;
+	public int score = 0;
+	public int highScore = 0;
 	
 	// set the borders of the screen
 	// offset (by 96 on sides, 128 on top) from the actual measurement of the screen
@@ -60,7 +65,8 @@ public class Player extends EntityBase {
 		if(!moving){
 			move();
 		}
-
+		
+		//WaterCollision();
 	}
 
 	private void reGrid() {
@@ -75,13 +81,50 @@ public class Player extends EntityBase {
 		}
 	}
 	
+	///////////if frogger is in water, game over//////////////////
+	public void WaterCollision() {
+		for(int i = 0; i < handler.getWorld().SpawnedAreas.size(); i++) {
+			if (handler.getWorld().SpawnedAreas.get(i) instanceof WaterArea && handler.getWorld().SpawnedAreas.get(i).getYPosition() == player.getY()) {
+				for (int j = 0; j < handler.getWorld().SpawnedHazards.size(); j++) {
+					if (getX() > handler.getWorld().SpawnedHazards.get(j).getX() 
+							&& getX() < handler.getWorld().SpawnedHazards.get(j).getX() + handler.getWorld().SpawnedHazards.get(j).getWidth()
+							&& getY() > handler.getWorld().SpawnedHazards.get(j).getY()
+							&& getY() < handler.getWorld().SpawnedHazards.get(j).getY() + handler.getWorld().SpawnedHazards.get(j).getHeight()) {
+						return;
+						//State.setState(handler.getGame().gameOverState);
+						}
+					}
+				}
+			State.setState(handler.getGame().gameOverState);
+			//return;
+			}
+		}
 	
 	private void move(){
 		if(moveCoolDown< 25){
 			moveCoolDown++;
 		}
-		index=0;
+		index=0;		
 		
+		//////////// if frogger in water, game over///////////
+		
+//		handler.getWorld().WaterCollision();
+		
+//		if (handler.get water, die)
+		
+		
+		//////////if frogger gets dragged off screen by log/turtle, game over/////////
+		// try if player Y > edge, die
+			
+//		Line2D leftBorderWater = new Line2D.Double(-112,-96,-112,864);
+//		Line2D rightBorderWater = new Line2D.Double(688,-96,688,864);
+//		if (new Rectangle(getX(),getY(),getWidth(),getHeight()).intersectsLine(leftBorderWater)) {
+//			State.setState(handler.getGame().gameOverState);
+//		}
+//		else if (new Rectangle(getX(),getY(),getWidth(),getHeight()).intersectsLine(rightBorderWater)) {
+//			State.setState(handler.getGame().gameOverState);
+//		}
+//		
 		/////////prevent frogger from stepping outside the screen///////////////
 		
 		if(new Rectangle(getX(),getY()-128,getWidth(),getHeight()).intersectsLine(topBorder)) { // up
@@ -90,7 +133,7 @@ public class Player extends EntityBase {
 		}
 		else if (new Rectangle(getX(),getY()+64,getWidth(),getHeight()).intersectsLine(bottomBorder)){ // down, should prompt game over screen instead
             State.setState(handler.getGame().gameOverState);
-			// handler.getGame().reStart();
+            
 		}
 		else if (new Rectangle(getX()-64,getY(),getWidth(),getHeight()).intersectsLine(leftBorder)){ // left
 			setX(getX()+32);
@@ -104,6 +147,16 @@ public class Player extends EntityBase {
 		/////////////////MOVE UP///////////////
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_W) && !moving && facing.equals("UP")){
 			
+			///////if Frogger touches water, game over//////////	
+			
+//			for (int i = 0; i < handler.getWorld().SpawnedAreas.size(); i++) {
+//				if (handler.getWorld().SpawnedAreas.get(i) instanceof WaterArea) {
+//					if (player.intersects(handler.) {
+//						
+//					}
+//				}
+//			}
+			
 			// disables Frogger from jumping on trees (found on each side below)
 			
 			for (int i = 0; i < handler.getWorld().SpawnedHazards.size(); i++) {
@@ -114,7 +167,19 @@ public class Player extends EntityBase {
 					}
 				}
 			}
+			
+			
+			////// keeps the score of the player, only when moving forward on tiles
+			if (highScore == score) {
+				score += 10;
+				highScore += 10;
+			}
+			else {
+				score += 10;
+			}
 			moving=true;
+			//System.out.println(highScore);
+			
 		}else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_W) && !moving && !facing.equals("UP")){
 			if(facing.equals("DOWN")) {
 				if(this.getX() % 64 >= 64 / 2 ) {
@@ -165,6 +230,11 @@ public class Player extends EntityBase {
 					}
 				}
 			}
+			score -= 10;	////// if frogger goes down, deduct points
+			if (score < 0) {
+				score = 0;
+			}
+			//System.out.println(highScore);
 			moving=true;
 		}else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_S) && !moving && !facing.equals("DOWN")){
 			reGrid();
@@ -267,6 +337,10 @@ public class Player extends EntityBase {
 
 
 		UpdatePlayerRectangle(g);
+        g.setFont(new Font("TimesRoman", Font.BOLD, 18));
+        g.setColor(Color.WHITE);
+        g.drawString("Score: " + highScore, 10, 20);
+
 
 	}
 
