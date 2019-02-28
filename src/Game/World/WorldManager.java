@@ -6,11 +6,13 @@ import Game.Entities.Static.Log;
 import Game.Entities.Static.StaticBase;
 import Game.Entities.Static.Tree;
 import Game.Entities.Static.Turtle;
+import Game.GameStates.State;
 import Main.Handler;
 import UI.UIManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -80,8 +82,8 @@ public class WorldManager {
 		 */
 
 		for(int i=0; i<gridHeight+2; i++) {
-//			SpawnedAreas.add(randomArea((-2+i)*64));
-// spawns only empty areas at the start, should fix for no-water only on spawn
+			//			SpawnedAreas.add(randomArea((-2+i)*64));
+			// spawns only empty areas at the start, should fix for no-water only on spawn
 			SpawnedAreas.add(new EmptyArea(handler, ((-2+i)*64)));
 		}
 
@@ -152,17 +154,17 @@ public class WorldManager {
 				player.setY(SpawnedAreas.get(i).getYPosition());
 			}
 		}
-		
+
 		HazardMovement();
-		
-        player.tick();
-        //make player move the same as the areas
-        player.setY(player.getY()+movementSpeed); 
-        
-        object2.tick();
-   
-    }
-		
+
+		player.tick();
+		//make player move the same as the areas
+		player.setY(player.getY()+movementSpeed); 
+
+		object2.tick();
+
+	}
+
 	public void HazardMovement() {
 
 		for (int i = 0; i < SpawnedHazards.size(); i++) {
@@ -171,7 +173,7 @@ public class WorldManager {
 			SpawnedHazards.get(i).setY(SpawnedHazards.get(i).getY() + movementSpeed);
 
 			// Moves Log or Turtle to the right
-			if (SpawnedHazards.get(i) instanceof Log || SpawnedHazards.get(i) instanceof Turtle) {
+			if (SpawnedHazards.get(i) instanceof Log) {
 				SpawnedHazards.get(i).setX(SpawnedHazards.get(i).getX() + 1);
 
 				// Verifies the hazards Rectangles aren't null and
@@ -180,21 +182,44 @@ public class WorldManager {
 				if (SpawnedHazards.get(i).GetCollision() != null
 						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) {
 					player.setX(player.getX() + 1);
+
+				}
+			}
+			else if (SpawnedHazards.get(i) instanceof Turtle) {
+				SpawnedHazards.get(i).setX(SpawnedHazards.get(i).getX() - 1);
+				if (SpawnedHazards.get(i).GetCollision() != null
+						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) {
+					player.setX(player.getX() - 1);
 				}
 			}
 
+			if (SpawnedHazards.get(i) instanceof Turtle) {
+				if (SpawnedHazards.get(i).getX() < 0) {
+					SpawnedHazards.add(new Turtle(handler, handler.getWidth() + 64, SpawnedHazards.get(i).getY()));
+					SpawnedHazards.remove(i);
+				}
+			}
+			else if (SpawnedHazards.get(i) instanceof Log) {
+				if (SpawnedHazards.get(i).getX() > handler.getWidth()) {
+					SpawnedHazards.add(new Log(handler, -128, SpawnedHazards.get(i).getY()));
+					SpawnedHazards.remove(i);
+				}
+			}
+			
 			// if hazard has passed the screen height, then remove this hazard.
 			if (SpawnedHazards.get(i).getY() > handler.getHeight()) {
 				SpawnedHazards.remove(i);
 			}
+			
+
 		}
 	}
 
-    
-    /*
-     * Given a yPosition, this method will return a random Area out of the Available ones.)
-     * It is also in charge of spawning hazards at a specific condition.
-     */
+
+	/*
+	 * Given a yPosition, this method will return a random Area out of the Available ones.)
+	 * It is also in charge of spawning hazards at a specific condition.
+	 */
 
 	public void render(Graphics g){
 
@@ -211,6 +236,31 @@ public class WorldManager {
 		this.object2.render(g);      
 
 	}
+
+	/////test if player in water////////
+//	public void WaterCollision() {
+//		for(int i = 0; i < SpawnedAreas.size(); i++) {
+//			if (SpawnedAreas.get(i) instanceof WaterArea && SpawnedAreas.get(i).getYPosition() == player.getY()) {
+//				if (handler.getWater().water.contains(player.getX(), player.getY(), player.getWidth(), player.getHeight())) {
+//					State.setState(handler.getGame().gameOverState);
+//				}
+//			}
+//		}		
+//	}
+//	public void WaterCollision() {
+//		for(int i = 0; i < SpawnedAreas.size(); i++) {
+//			if (SpawnedAreas.get(i) instanceof WaterArea && SpawnedAreas.get(i).getYPosition() == player.getY()) {
+//				for (int j = 0; j < SpawnedHazards.size(); j++) {
+//					if (SpawnedHazards.get(i) instanceof Log || SpawnedHazards.get(i) instanceof Turtle || SpawnedHazards.get(i) instanceof LillyPad ) {
+//						if (player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())){
+//							return;
+//						}
+//					}
+//				}
+//			}
+//			State.setState(handler.getGame().gameOverState);
+//		}
+//	}
 
 	/*
 	 * Given a yPosition, this method will return a random Area out of the Available ones.)
@@ -242,7 +292,7 @@ public class WorldManager {
 	/*
 	 * Given a yPositionm this method will add a new hazard to the SpawnedHazards ArrayList
 	 */
-				
+
 	public void SpawnHazard(int yPosition, BaseArea area) {
 		Random rand = new Random();
 		int randInt;
@@ -250,8 +300,28 @@ public class WorldManager {
 		// Chooses between Log or Lillypad
 		if (area instanceof WaterArea) {
 			if (choice <=2) {
-				randInt = 64 * rand.nextInt(4);
-				SpawnedHazards.add(new Log(handler, randInt, yPosition));
+				rand = new Random();
+				choice = rand.nextInt(4);
+				randInt = 64 * rand.nextInt(9);
+				if (choice == 0) {
+					SpawnedHazards.add(new Log(handler, randInt, yPosition));
+				}
+				else if (choice == 1) {
+					SpawnedHazards.add(new Log(handler, randInt, yPosition));
+					SpawnedHazards.add(new Log(handler, randInt - 128, yPosition));
+				}
+				else if (choice == 2) {
+					SpawnedHazards.add(new Log(handler, randInt, yPosition));
+					SpawnedHazards.add(new Log(handler, randInt - 128, yPosition));
+					SpawnedHazards.add(new Log(handler, randInt - 128*2, yPosition));
+				}
+				else {
+					SpawnedHazards.add(new Log(handler, randInt, yPosition));
+					SpawnedHazards.add(new Log(handler, randInt - 128, yPosition));
+					SpawnedHazards.add(new Log(handler, randInt - 128*2, yPosition));
+					SpawnedHazards.add(new Log(handler, randInt - 128*3, yPosition));
+				}
+
 			}
 			else if (choice >=5){
 				if (prevLillySpawn == false) {
@@ -267,8 +337,27 @@ public class WorldManager {
 					rand = new Random();
 					choice = rand.nextInt(2);
 					if (choice <= 1) {
+						rand = new Random();
+						choice = rand.nextInt(4);
 						randInt = 64 * rand.nextInt(4);
-						SpawnedHazards.add(new Log(handler, randInt, yPosition));
+						if (choice == 0) {
+							SpawnedHazards.add(new Log(handler, randInt, yPosition));
+						}
+						else if (choice == 1) {
+							SpawnedHazards.add(new Log(handler, randInt, yPosition));
+							SpawnedHazards.add(new Log(handler, randInt - 128, yPosition));
+						}
+						else if (choice == 2) {
+							SpawnedHazards.add(new Log(handler, randInt, yPosition));
+							SpawnedHazards.add(new Log(handler, randInt - 128, yPosition));
+							SpawnedHazards.add(new Log(handler, randInt - 128*2, yPosition));
+						}
+						else {
+							SpawnedHazards.add(new Log(handler, randInt, yPosition));
+							SpawnedHazards.add(new Log(handler, randInt - 128, yPosition));
+							SpawnedHazards.add(new Log(handler, randInt - 128*2, yPosition));
+							SpawnedHazards.add(new Log(handler, randInt - 128*3, yPosition));
+						}
 					}
 					else {
 						randInt = 64 * rand.nextInt(3);
