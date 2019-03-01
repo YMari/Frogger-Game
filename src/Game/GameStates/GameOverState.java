@@ -6,6 +6,7 @@ import java.awt.Graphics;
 
 import javax.swing.JLabel;
 
+import Game.Entities.Dynamic.Player;
 import Main.Handler;
 import Resources.Images;
 import UI.UIImageButton;
@@ -29,12 +30,12 @@ public class GameOverState extends State {
         uiManager.addObjects(new UIImageButton(33, handler.getGame().getHeight() - 150, 128, 64, Images.Resume, () -> {
             handler.getMouseManager().setUimanager(null);
             State.setState(handler.getGame().gameState);
+//            handler.getPlayer().setScore(0);
+//            handler.getPlayer().setHighScore(0);
             handler.getGame().reStart();
-        }));
 
-        uiManager.addObjects(new UIImageButton(33 + 192,  handler.getGame().getHeight() - 150, 128, 64, Images.Options, () -> {
-            handler.getMouseManager().setUimanager(null);
-            State.setState(handler.getGame().menuState);
+
+
         }));
 
         uiManager.addObjects(new UIImageButton(33 + 192 * 2,  handler.getGame().getHeight() - 150, 128, 64, Images.BTitle, () -> {

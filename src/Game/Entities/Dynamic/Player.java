@@ -34,9 +34,10 @@ public class Player extends EntityBase {
 
 
 	private int index =0;
+
 	public int score = 0;
 	public static int highScore = 0;
-	
+
 	// set the borders of the screen
 	// offset (by 96 on sides, 128 on top) from the actual measurement of the screen
 	// so the animation looks good
@@ -44,9 +45,13 @@ public class Player extends EntityBase {
 	public Line2D bottomBorder = new Line2D.Double(-96,864,672,864);
 	public Line2D leftBorder = new Line2D.Double(-96,-96,-96,864);
 	public Line2D rightBorder = new Line2D.Double(672,-96,672,864);
-	
 
 
+	public int getScore() {return score;}
+	public int getHighScore() {return highScore;}
+
+	public void setScore(int score) {this.score = score;}
+	public void setHighScore(int highScore) {this.highScore = highScore;}
 
 	public Player(Handler handler) {
 		super(handler);
@@ -65,7 +70,7 @@ public class Player extends EntityBase {
 		if(!moving){
 			move();
 		}
-		
+
 		//WaterCollision();
 	}
 
@@ -80,60 +85,76 @@ public class Player extends EntityBase {
 			setY(getY()-64);
 		}
 	}
-	
+
 	///////////if frogger is in water, game over//////////////////
 	public void WaterCollision() {
+		//		for(int i = 0; i < handler.getWorld().SpawnedAreas.size(); i++) {
+		//			if (handler.getWorld().SpawnedAreas.get(i) instanceof WaterArea && handler.getWorld().SpawnedAreas.get(i).getYPosition() == player.y) {
+		//				for (int j = 0; j < handler.getWorld().SpawnedHazards.size(); j++) {
+		//					if (player.x >= handler.getWorld().SpawnedHazards.get(j).getX() 
+		//							&& player.x <= handler.getWorld().SpawnedHazards.get(j).getX() + handler.getWorld().SpawnedHazards.get(j).getWidth()
+		//							&& player.y >= handler.getWorld().SpawnedHazards.get(j).getY()
+		//							&& player.y <= handler.getWorld().SpawnedHazards.get(j).getY() + handler.getWorld().SpawnedHazards.get(j).getHeight()) {
+		//						return;
+		//						//State.setState(handler.getGame().gameOverState);
+		//						}
+		//					}
+		//				}
+		//			State.setState(handler.getGame().gameOverState);
+		//			//return;
+		//			}
+
 		for(int i = 0; i < handler.getWorld().SpawnedAreas.size(); i++) {
-			if (handler.getWorld().SpawnedAreas.get(i) instanceof WaterArea && handler.getWorld().SpawnedAreas.get(i).getYPosition() == player.getY()) {
-				for (int j = 0; j < handler.getWorld().SpawnedHazards.size(); j++) {
-					if (player.x > handler.getWorld().SpawnedHazards.get(j).getX() 
-							&& player.x < handler.getWorld().SpawnedHazards.get(j).getX() + handler.getWorld().SpawnedHazards.get(j).getWidth()
-							&& player.y > handler.getWorld().SpawnedHazards.get(j).getY()
-							&& player.y < handler.getWorld().SpawnedHazards.get(j).getY() + handler.getWorld().SpawnedHazards.get(j).getHeight()) {
-						return;
-						//State.setState(handler.getGame().gameOverState);
+			if (handler.getWorld().SpawnedAreas.get(i) instanceof WaterArea) {
+				if (player.y == handler.getWorld().SpawnedAreas.get(i).getYPosition()) {
+					for (int j = 0; j < handler.getWorld().SpawnedHazards.size(); j++) {
+						if (player.getX() >= handler.getWorld().SpawnedHazards.get(j).getX() 
+								&& player.getX() <= handler.getWorld().SpawnedHazards.get(j).getWidth()
+								&& player.getY() >= handler.getWorld().SpawnedHazards.get(j).getY()
+								&& player.getY() <= handler.getWorld().SpawnedHazards.get(j).getHeight()) {
+							return;
 						}
 					}
+					State.setState(handler.getGame().gameOverState);
 				}
-			State.setState(handler.getGame().gameOverState);
-			//return;
 			}
-		}
-	
+		}	
+	}
+
 	private void move(){
 		if(moveCoolDown< 25){
 			moveCoolDown++;
 		}
 		index=0;		
-		
+
 		//////////// if frogger in water, game over///////////
-		
-//		handler.getWorld().WaterCollision();
-		
-//		if (handler.get water, die)
-		
-		
+
+		//		handler.getWorld().WaterCollision();
+
+		//		if (handler.get water, die)
+
+
 		//////////if frogger gets dragged off screen by log/turtle, game over/////////
 		// try if player Y > edge, die
-			
-//		Line2D leftBorderWater = new Line2D.Double(-112,-96,-112,864);
-//		Line2D rightBorderWater = new Line2D.Double(688,-96,688,864);
-//		if (new Rectangle(getX(),getY(),getWidth(),getHeight()).intersectsLine(leftBorderWater)) {
-//			State.setState(handler.getGame().gameOverState);
-//		}
-//		else if (new Rectangle(getX(),getY(),getWidth(),getHeight()).intersectsLine(rightBorderWater)) {
-//			State.setState(handler.getGame().gameOverState);
-//		}
-//		
+
+		//		Line2D leftBorderWater = new Line2D.Double(-112,-96,-112,864);
+		//		Line2D rightBorderWater = new Line2D.Double(688,-96,688,864);
+		//		if (new Rectangle(getX(),getY(),getWidth(),getHeight()).intersectsLine(leftBorderWater)) {
+		//			State.setState(handler.getGame().gameOverState);
+		//		}
+		//		else if (new Rectangle(getX(),getY(),getWidth(),getHeight()).intersectsLine(rightBorderWater)) {
+		//			State.setState(handler.getGame().gameOverState);
+		//		}
+		//		
 		/////////prevent frogger from stepping outside the screen///////////////
-		
+
 		if(new Rectangle(getX(),getY()-128,getWidth(),getHeight()).intersectsLine(topBorder)) { // up
 			setY(getY()+64);
 			return;
 		}
 		else if (new Rectangle(getX(),getY()+64,getWidth(),getHeight()).intersectsLine(bottomBorder)){ // down, should prompt game over screen instead
-            State.setState(handler.getGame().gameOverState);
-            
+			State.setState(handler.getGame().gameOverState);
+
 		}
 		else if (new Rectangle(getX()-64,getY(),getWidth(),getHeight()).intersectsLine(leftBorder)){ // left
 			setX(getX()+32);
@@ -143,22 +164,22 @@ public class Player extends EntityBase {
 			setX(getX()-32);
 			return;
 		}
-		
+
 		/////////////////MOVE UP///////////////
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_W) && !moving && facing.equals("UP")){
-			
+
 			///////if Frogger touches water, game over//////////	
-			
-//			for (int i = 0; i < handler.getWorld().SpawnedAreas.size(); i++) {
-//				if (handler.getWorld().SpawnedAreas.get(i) instanceof WaterArea) {
-//					if (player.intersects(handler.) {
-//						
-//					}
-//				}
-//			}
-			
+
+			//			for (int i = 0; i < handler.getWorld().SpawnedAreas.size(); i++) {
+			//				if (handler.getWorld().SpawnedAreas.get(i) instanceof WaterArea) {
+			//					if (player.intersects(handler.) {
+			//						
+			//					}
+			//				}
+			//			}
+
 			// disables Frogger from jumping on trees (found on each side below)
-			
+
 			for (int i = 0; i < handler.getWorld().SpawnedHazards.size(); i++) {
 				if (handler.getWorld().SpawnedHazards.get(i) instanceof Tree) {
 					if (handler.getWorld().SpawnedHazards.get(i).GetCollision() != null
@@ -167,8 +188,8 @@ public class Player extends EntityBase {
 					}
 				}
 			}
-			
-			
+
+
 			////// keeps the score of the player, only when moving forward on tiles
 			if (highScore == score) {
 				score += 10;
@@ -179,7 +200,7 @@ public class Player extends EntityBase {
 			}
 			moving=true;
 			//System.out.println(highScore);
-			
+
 		}else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_W) && !moving && !facing.equals("UP")){
 			if(facing.equals("DOWN")) {
 				if(this.getX() % 64 >= 64 / 2 ) {
@@ -337,9 +358,9 @@ public class Player extends EntityBase {
 
 
 		UpdatePlayerRectangle(g);
-        g.setFont(new Font("TimesRoman", Font.BOLD, 18));
-        g.setColor(Color.WHITE);
-        g.drawString("Score: " + highScore, 10, 20);
+		g.setFont(new Font("TimesRoman", Font.BOLD, 18));
+		g.setColor(Color.WHITE);
+		g.drawString("Score: " + highScore, 10, 20);
 
 
 	}
@@ -376,7 +397,7 @@ public class Player extends EntityBase {
 	}
 
 
-    public Rectangle getPlayerCollision() {
-        return player;
-    }
+	public Rectangle getPlayerCollision() {
+		return player;
+	}
 }

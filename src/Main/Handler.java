@@ -2,6 +2,7 @@ package Main;
 
 import Game.Entities.Dynamic.Player;
 import Game.Entities.EntityManager;
+import Game.World.WaterArea;
 import Game.World.WorldManager;
 import Input.KeyManager;
 import Input.MouseManager;
@@ -18,7 +19,8 @@ public class Handler {
     private WorldManager world;
     private Player player;
     public static String str = Animation.getLtr();
-
+    
+    private WaterArea water;
 
     public Handler(GameSetUp game){
         this.game = game;
@@ -70,5 +72,9 @@ public class Handler {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+    
+    public WaterArea getWater() {
+    	return water;
     }
 }

@@ -28,15 +28,7 @@ public class Tree extends StaticBase {
 	}
 	
     @Override
-    public Rectangle GetCollision() {
-    		
+    public Rectangle GetCollision() {	
     	return tree;
-//    	return new Rectangle();
-    	
     }
-//    public Rectangle UpdateTreeRectangle(Graphics g) {
-//        tree = new Rectangle(this.getX(), this.getY(), getWidth(), getHeight());
-//        return tree;
-//    }
-    
 }
