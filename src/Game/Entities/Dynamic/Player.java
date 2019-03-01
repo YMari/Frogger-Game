@@ -71,7 +71,7 @@ public class Player extends EntityBase {
 			move();
 		}
 
-		//WaterCollision();
+		WaterCollision();
 	}
 
 	private void reGrid() {
@@ -88,30 +88,14 @@ public class Player extends EntityBase {
 
 	///////////if frogger is in water, game over//////////////////
 	public void WaterCollision() {
-		//		for(int i = 0; i < handler.getWorld().SpawnedAreas.size(); i++) {
-		//			if (handler.getWorld().SpawnedAreas.get(i) instanceof WaterArea && handler.getWorld().SpawnedAreas.get(i).getYPosition() == player.y) {
-		//				for (int j = 0; j < handler.getWorld().SpawnedHazards.size(); j++) {
-		//					if (player.x >= handler.getWorld().SpawnedHazards.get(j).getX() 
-		//							&& player.x <= handler.getWorld().SpawnedHazards.get(j).getX() + handler.getWorld().SpawnedHazards.get(j).getWidth()
-		//							&& player.y >= handler.getWorld().SpawnedHazards.get(j).getY()
-		//							&& player.y <= handler.getWorld().SpawnedHazards.get(j).getY() + handler.getWorld().SpawnedHazards.get(j).getHeight()) {
-		//						return;
-		//						//State.setState(handler.getGame().gameOverState);
-		//						}
-		//					}
-		//				}
-		//			State.setState(handler.getGame().gameOverState);
-		//			//return;
-		//			}
-
 		for(int i = 0; i < handler.getWorld().SpawnedAreas.size(); i++) {
 			if (handler.getWorld().SpawnedAreas.get(i) instanceof WaterArea) {
 				if (player.y == handler.getWorld().SpawnedAreas.get(i).getYPosition()) {
 					for (int j = 0; j < handler.getWorld().SpawnedHazards.size(); j++) {
 						if (player.getX() >= handler.getWorld().SpawnedHazards.get(j).getX() 
-								&& player.getX() <= handler.getWorld().SpawnedHazards.get(j).getWidth()
+								&& player.getX() <= handler.getWorld().SpawnedHazards.get(j).getX() + handler.getWorld().SpawnedHazards.get(j).getWidth()
 								&& player.getY() >= handler.getWorld().SpawnedHazards.get(j).getY()
-								&& player.getY() <= handler.getWorld().SpawnedHazards.get(j).getHeight()) {
+								&& player.getY() <= handler.getWorld().SpawnedHazards.get(j).getY() + handler.getWorld().SpawnedHazards.get(j).getHeight()) {
 							return;
 						}
 					}
@@ -127,27 +111,8 @@ public class Player extends EntityBase {
 		}
 		index=0;		
 
-		//////////// if frogger in water, game over///////////
-
-		//		handler.getWorld().WaterCollision();
-
-		//		if (handler.get water, die)
-
-
-		//////////if frogger gets dragged off screen by log/turtle, game over/////////
-		// try if player Y > edge, die
-
-		//		Line2D leftBorderWater = new Line2D.Double(-112,-96,-112,864);
-		//		Line2D rightBorderWater = new Line2D.Double(688,-96,688,864);
-		//		if (new Rectangle(getX(),getY(),getWidth(),getHeight()).intersectsLine(leftBorderWater)) {
-		//			State.setState(handler.getGame().gameOverState);
-		//		}
-		//		else if (new Rectangle(getX(),getY(),getWidth(),getHeight()).intersectsLine(rightBorderWater)) {
-		//			State.setState(handler.getGame().gameOverState);
-		//		}
-		//		
-		/////////prevent frogger from stepping outside the screen///////////////
-
+		////////////disables frogger from leaving the frame, kills him on bottom border//////////
+		
 		if(new Rectangle(getX(),getY()-128,getWidth(),getHeight()).intersectsLine(topBorder)) { // up
 			setY(getY()+64);
 			return;
@@ -167,16 +132,6 @@ public class Player extends EntityBase {
 
 		/////////////////MOVE UP///////////////
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_W) && !moving && facing.equals("UP")){
-
-			///////if Frogger touches water, game over//////////	
-
-			//			for (int i = 0; i < handler.getWorld().SpawnedAreas.size(); i++) {
-			//				if (handler.getWorld().SpawnedAreas.get(i) instanceof WaterArea) {
-			//					if (player.intersects(handler.) {
-			//						
-			//					}
-			//				}
-			//			}
 
 			// disables Frogger from jumping on trees (found on each side below)
 
@@ -358,6 +313,9 @@ public class Player extends EntityBase {
 
 
 		UpdatePlayerRectangle(g);
+		
+		//////////displays the score on the game screen///////////
+		
 		g.setFont(new Font("TimesRoman", Font.BOLD, 18));
 		g.setColor(Color.WHITE);
 		g.drawString("Score: " + highScore, 10, 20);

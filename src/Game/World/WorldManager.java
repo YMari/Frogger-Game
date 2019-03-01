@@ -193,6 +193,8 @@ public class WorldManager {
 				}
 			}
 
+			//////////////loop logs and turtles/////////////
+			
 			if (SpawnedHazards.get(i) instanceof Turtle) {
 				if (SpawnedHazards.get(i).getX() < 0) {
 					SpawnedHazards.add(new Turtle(handler, handler.getWidth() + 64, SpawnedHazards.get(i).getY()));
@@ -237,7 +239,7 @@ public class WorldManager {
 
 	}
 
-	/////test if player in water////////
+	/////test if player in water////////                //////////failed attempt///////////
 //	public void WaterCollision() {
 //		for(int i = 0; i < SpawnedAreas.size(); i++) {
 //			if (SpawnedAreas.get(i) instanceof WaterArea && SpawnedAreas.get(i).getYPosition() == player.getY()) {
